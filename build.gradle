@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation "com.github.doorbash:colyseus-kotlin:0.14.5"
+}
+
+task runExample(dependsOn: classes, type: JavaExec) {
+    main = "example.kotlin.MainKt"
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = new File(".")
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
